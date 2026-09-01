@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TraitDefinition" format=3 uid="uid://c0cu2ncv1p0gu"]
+
+[ext_resource type="Script" uid="uid://bjb7krp62ufk7" path="res://data/trait_defininition.gd" id="1_v5c5s"]
+
+[resource]
+script = ExtResource("1_v5c5s")
+id = "color"
+dominant_allele = "G"
+recessive_allele = "g"
+dominant_phenotype = "Gold"
+recessive_phenotype = "Silver"
+metadata/_custom_type_script = "uid://bjb7krp62ufk7"

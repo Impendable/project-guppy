@@ -1,3 +1,6 @@
 [gd_scene format=3 uid="uid://q41sa0xa82gu"]
 
+[ext_resource type="Script" uid="uid://bdm3duc5wo8l4" path="res://tests/test_breeding_ratios.gd" id="1_fblgx"]
+
 [node name="Main" type="Node" unique_id=1737736042]
+script = ExtResource("1_fblgx")
