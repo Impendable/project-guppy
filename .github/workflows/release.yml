@@ -1,0 +1,39 @@
+name: Automated Release
+
+on:
+ push:
+  branches:
+   - main
+
+jobs:
+ release:
+   name: Run Semantic Release
+   runs-on: ubuntu-latest
+
+   permissions:
+    contents:  write
+
+   steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+       fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "lts/*"
+
+    - name: Install Release Tools
+      run: |
+        npm install -g semantic-release \
+        @semantic-release/commit-analyzer \
+        @semantic-release/release-notes-generator \
+        @semantic-release/github \
+        @semantic-release/exec
+
+    - name: Run Semantic Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npx semantic-release
+      
