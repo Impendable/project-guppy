@@ -1,5 +1,5 @@
 class_name FishGenome
-extends Node
+extends Resource
 
 
 # trait_id -> ["G", "g"] (two allele strings) { "color": ["G","g"] }

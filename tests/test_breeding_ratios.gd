@@ -5,7 +5,7 @@ const RUNS := 1000
 func _ready() -> void:
 	var color: TraitDefinition = load("res://resources/traits/color.tres")
 	var rng := RandomNumberGenerator.new()
-	var test_seed := 24680
+	var test_seed := 12345
 	rng.seed = test_seed
 	
 	var parent_a := FishGenome.new()
@@ -20,5 +20,5 @@ func _ready() -> void:
 		if color.phenotype_for(child.alleles["color"]) == color.dominant_phenotype:
 			gold += 1
 	
-	print("Ratio: %.2f" % [float(gold)/RUNS])
+	print("Gold: %d, Ratio: %.4f" % [gold, float(gold)/RUNS])
 		

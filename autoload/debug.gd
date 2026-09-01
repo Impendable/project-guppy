@@ -10,4 +10,6 @@ func _ready() -> void:
 		rng.seed = fixed_seed
 	else:
 		rng.randomize()
+		
+	print("RNG seed: ", rng.seed)
 	
