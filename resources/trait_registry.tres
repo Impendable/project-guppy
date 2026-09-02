@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitRegistry" format=3 uid="uid://c7ynfx008f5u8"]
+
+[ext_resource type="Script" uid="uid://7lxyccpjdjpl" path="res://data/trait_registry.gd" id="1_oiuwl"]
+[ext_resource type="Script" uid="uid://bjb7krp62ufk7" path="res://data/trait_defininition.gd" id="2_x5xje"]
+[ext_resource type="Resource" uid="uid://c0cu2ncv1p0gu" path="res://resources/traits/color.tres" id="3_aqmga"]
+[ext_resource type="Resource" uid="uid://dq8ynky6ijfl3" path="res://resources/traits/fin_length.tres" id="4_btg4r"]
+[ext_resource type="Resource" uid="uid://bnb036ikawdpn" path="res://resources/traits/glow.tres" id="5_4tcsy"]
+[ext_resource type="Resource" uid="uid://dlgplc5qshcoo" path="res://resources/traits/growth.tres" id="6_bfmdu"]
+
+[resource]
+script = ExtResource("1_oiuwl")
+traits = Array[ExtResource("2_x5xje")]([ExtResource("3_aqmga"), ExtResource("4_btg4r"), ExtResource("5_4tcsy"), ExtResource("6_bfmdu")])
+metadata/_custom_type_script = "uid://7lxyccpjdjpl"

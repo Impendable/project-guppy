@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TraitDefinition" format=3 uid="uid://bnb036ikawdpn"]
+
+[ext_resource type="Script" uid="uid://bjb7krp62ufk7" path="res://data/trait_defininition.gd" id="1_fv6hu"]
+
+[resource]
+script = ExtResource("1_fv6hu")
+id = "Glow"
+dominant_allele = "B"
+recessive_allele = "b"
+dominant_phenotype = "Non-glow"
+recessive_phenotype = "Glow"
+metadata/_custom_type_script = "uid://bjb7krp62ufk7"
