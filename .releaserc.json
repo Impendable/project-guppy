@@ -1,14 +1,14 @@
 {
-    "branches": ["main"],
-    "plugins": [
-        "@semantic-release/commit-analyzer",
-        "@semantic-release/release-notes-generator",
-        [
-        @"semantic-release/exec",
-        {
-        "prepareCMD": "sed -i 's/config\\/version=\".*"/config\\/version=\"/' project.godot
-            }
-        ],
-        "@semantic-release/github"
-    ]
+  "branches": ["main"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "sed -i 's/config\\/version=\".*\"/config\\/version=\"${nextRelease.version}\"/' project.godot"
+      }
+    ],
+    "@semantic-release/github"
+  ]
 }
