@@ -12,4 +12,3 @@ func _ready() -> void:
 		rng.randomize()
 		
 	print("RNG seed: ", rng.seed)
-	

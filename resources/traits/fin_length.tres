@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_eaumw")
-id = "Fin Length"
+id = "fin length"
 dominant_allele = "L"
 recessive_allele = "l"
 dominant_phenotype = "Long"

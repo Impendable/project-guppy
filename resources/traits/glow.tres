@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_fv6hu")
-id = "Glow"
+id = "glow"
 dominant_allele = "B"
 recessive_allele = "b"
 dominant_phenotype = "Non-glow"

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_x73nv")
-id = "Growth"
+id = "growth"
 dominant_allele = "F"
 recessive_allele = "f"
 dominant_phenotype = "Fast"
