@@ -1,7 +1,7 @@
 class_name RosterGenerator
 extends RefCounted
 
-const GLOWING_CARRIER_COUNT := 2
+const GLOWING_CARRIER_COUNT := 2  
 const MIN_FISH := 6
 const MAX_FISH := 10
 
@@ -34,10 +34,13 @@ static func generate(registry: TraitRegistry, rng: RandomNumberGenerator) -> Arr
 		roster.append(new_fish)
 		
 	#Guarantee Glow Pair Genomes
-	for i in GLOWING_CARRIER_COUNT:
+	for i in roster.size():
 		var glow: TraitDefinition = load("res://resources/traits/glow.tres")
-		roster[i].genome.alleles["glow"] = [glow.dominant_allele, glow.recessive_allele]
-		
+		if i < GLOWING_CARRIER_COUNT:
+			roster[i].genome.alleles["glow"] = [glow.dominant_allele, glow.recessive_allele]
+		else:
+			roster[i].genome.alleles["glow"] = [glow.dominant_allele, glow.dominant_allele]
+			
 	# Guarantee breeding pair
 	roster[0].sex = FishData.Sex.FEMALE
 	roster[1].sex = FishData.Sex.MALE	
