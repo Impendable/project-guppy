@@ -9,12 +9,15 @@ func _ready() -> void:
 	var roster := RosterGenerator.generate(trait_list, rng)
 	
 	for fish in roster:
-		print("ID: %s %s %s | color: %s%s -> %s | fin length: %s%s -> %s | glow: %s%s -> %s | growth: %s%s -> %s" % [
-			fish.id, FishData.Sex.find_key(fish.sex), FishData.LifeStage.find_key(fish.life_stage),
-			fish.genome.alleles["color"][0], fish.genome.alleles["color"][1], fish.cached_phenotype_dictionary["color"],
-			fish.genome.alleles["fin length"][0], fish.genome.alleles["fin length"][1], fish.cached_phenotype_dictionary["fin length"],
-			fish.genome.alleles["glow"][0], fish.genome.alleles["glow"][1], fish.cached_phenotype_dictionary["glow"],
-			fish.genome.alleles["growth"][0], fish.genome.alleles["growth"][1], fish.cached_phenotype_dictionary["growth"],
+		var  traits_text := ""
+		for trait_id in fish.cached_phenotype_dictionary:
+			traits_text += "%s: %s%s -> %s |" % [
+				trait_id,
+				fish.genome.alleles[trait_id][0], fish.genome.alleles[trait_id][1],
+				fish.cached_phenotype_dictionary[trait_id],
+				]
+		print("ID: %s %s %s | %s" % [
+			fish.id, FishData.Sex.find_key(fish.sex), FishData.LifeStage.find_key(fish.life_stage),traits_text
 		])
 	print("RNG seed(ROSTERGENTEST): ", rng.seed)
 

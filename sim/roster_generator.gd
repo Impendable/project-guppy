@@ -1,7 +1,7 @@
 class_name RosterGenerator
 extends RefCounted
 
-const GLOWING_CARRIER_COUNT := 1  
+const GLOWING_CARRIER_COUNT := 2  
 const MIN_FISH := 6
 const MAX_FISH := 10
 
