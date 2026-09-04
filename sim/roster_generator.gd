@@ -8,6 +8,7 @@ const MAX_FISH := 10
 
 
 static func generate(registry: TraitRegistry, rng: RandomNumberGenerator) -> Array[FishData]:
+	@warning_ignore("assert_always_true")
 	assert(GLOWING_CARRIER_COUNT < MIN_FISH, "More Carriers than fish: %d/%d" % [GLOWING_CARRIER_COUNT, MIN_FISH])
 	var roster: Array[FishData] = []
 	var starting_amount := rng.randi_range(MIN_FISH, MAX_FISH)

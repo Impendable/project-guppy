@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GUPPY"
-run/main_scene="uid://q41sa0xa82gu"
+run/main_scene="uid://c36fdkbihrc31"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -21,6 +21,8 @@ Debug="*uid://cyets0osknbbu"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
