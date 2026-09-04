@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LifecycleConfig" format=3 uid="uid://rr2nqeyx1xmt"]
+
+[ext_resource type="Script" uid="uid://bp8quqgcqcit5" path="res://data/lifecycle_config.gd" id="1_uvgsy"]
+
+[resource]
+script = ExtResource("1_uvgsy")
+fry_cycles = 1
+juvenile_cycles = 2
+adult_cycles = 5
+old_cycles = 2
+fast_growth_discount = 1
+metadata/_custom_type_script = "uid://bp8quqgcqcit5"

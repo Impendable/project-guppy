@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c36fdkbihrc31"]
 
-[ext_resource type="Script" uid="uid://cfco62r5po52w" path="res://ui/roster_screen.gd" id="1_o2ipl"]
+[ext_resource type="Script" uid="uid://jlot4k2bvwla" path="res://tests/test_aging.gd" id="1_5qy53"]
 [ext_resource type="PackedScene" uid="uid://d1m5jrcle7pgd" path="res://ui/fish_card.tscn" id="2_5qy53"]
 
 [node name="RosterScreen" type="Control" unique_id=552186384]
@@ -10,7 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_o2ipl")
+script = ExtResource("1_5qy53")
 fish_card_scene = ExtResource("2_5qy53")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1278049826]
@@ -26,3 +26,20 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
+
+[node name="AdvanceCycleButton" type="Button" parent="." unique_id=1745743773]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -8.0
+offset_right = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Advance Cycle"
+
+[connection signal="pressed" from="AdvanceCycleButton" to="." method="_on_cycle_advanced"]
