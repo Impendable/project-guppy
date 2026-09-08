@@ -4,6 +4,8 @@ extends RefCounted
 const GLOWING_CARRIER_COUNT := 2  
 const MIN_FISH := 6
 const MAX_FISH := 10
+const MIN_STARTING_AGE := 4
+const MAX_STARTING_AGE := 7
 
 
 
@@ -13,14 +15,16 @@ static func generate(registry: TraitRegistry, rng: RandomNumberGenerator) -> Arr
 	var roster: Array[FishData] = []
 	var starting_amount := rng.randi_range(MIN_FISH, MAX_FISH)
 	
+	
 	for i in starting_amount:
 		var new_fish := FishData.new()
 		var new_genome := FishGenome.new()
+		var starting_age := rng.randi_range(MIN_STARTING_AGE, MAX_STARTING_AGE)
 		
 		new_fish.id = "fish_%d" % i
 		new_fish.display_name = new_fish.id
 		new_fish.sex = FishData.Sex.values()[rng.randi_range(0, 1)]
-		new_fish.age = 1
+		new_fish.age = starting_age
 		new_fish.life_stage = FishData.LifeStage.ADULT
 		new_fish.lineage = []
 		new_fish.health = 100

@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://q41sa0xa82gu"]
 
-[ext_resource type="Script" uid="uid://backwk5mnn2e" path="res://tests/test_roster_genrator.gd" id="1_fblgx"]
+[ext_resource type="Script" uid="uid://jlot4k2bvwla" path="res://tests/test_aging.gd" id="1_fblgx"]
 
-[node name="Main" type="Node" unique_id=1737736042]
+[node name="Main" type="Control" unique_id=316868742]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_fblgx")
