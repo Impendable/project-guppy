@@ -48,9 +48,15 @@ static func generate(registry: TraitRegistry, rng: RandomNumberGenerator) -> Arr
 			
 	# Guarantee breeding pair
 	roster[0].sex = FishData.Sex.FEMALE
-	roster[1].sex = FishData.Sex.MALE	
+	roster[0].genome.alleles["growth"] = ["F", "F"]
+	roster[0].age = 0
+	roster[0].life_stage = FishData.LifeStage.FRY
+	roster[1].sex = FishData.Sex.MALE
+	roster[1].genome.alleles["growth"] = ["f", "f"]
+	roster[1].age = 0
+	roster[1].life_stage = FishData.LifeStage.FRY
 	
-	# Resolve Phenotypes Once.
+	# Resolve Phenotypes Once
 	for fish in roster:
 		fish.cached_phenotype_dictionary = PhenotypeResolver.resolve(fish.genome, registry)
 
