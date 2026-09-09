@@ -12,6 +12,7 @@ offset_bottom = -640.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hej4u")
+selected_tint = null
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=159280073]
 layout_mode = 2
@@ -47,5 +48,9 @@ layout_mode = 2
 text = "Stage"
 
 [node name="FishTraitContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=217329381]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TraitLabel" type="Label" parent="MarginContainer/VBoxContainer/FishTraitContainer" unique_id=1658747145]
 unique_name_in_owner = true
 layout_mode = 2
