@@ -5,6 +5,8 @@ const MAX_SELECTED_PARENTS := 2
 
 @onready var cycle_label: Label = %CycleLabel
 @onready var advance_button: Button = %AdvanceCycleButton
+@onready var breed_button: Button = %BreedButton
+@onready var breed_result_label: Label = %BreedResultlabel
 @onready var card_container: VBoxContainer = %FishCardContainer
 
 var registry: TraitRegistry
@@ -13,29 +15,35 @@ var lifecycle_config: LifecycleConfig
 var roster: Array[FishData] = []
 var selected_parent_ids: Array[String] = []
 var cards_by_id: Dictionary[String, FishCard] = {}
+var next_fish_id: int = 0
 
 
 func _ready() -> void:
 	registry = load("res://resources/trait_registry.tres")
 	lifecycle_config = load("res://resources/lifecycle_config.tres")
 	roster = RosterGenerator.generate(registry, Debug.rng)
+	next_fish_id = roster.size()
 	
 	advance_button.pressed.connect(_on_advance_cycle_button_pressed)
 	TimeManager.cycle_advanced.connect(_on_cycle_advanced)
+	breed_button.pressed.connect(_on_breed_button_pressed)
 	
 	cycle_label.text = "Cycle: %d" % TimeManager.cycle
 	_refresh_roster_ui()
 
+
 func _on_advance_cycle_button_pressed() -> void:
 	TimeManager.advance_cycle()
-	
+
+
 func _on_cycle_advanced(cycle: int) -> void:
 	var dead := AgingSystem.advance(roster, lifecycle_config)
 	for fish in dead:
 		roster.erase(fish)
 	cycle_label.text = "Cycle: %d" % cycle
 	_refresh_roster_ui()
-	
+
+
 func _refresh_roster_ui() -> void:
 	var live_ids: Array[String] = []
 	
@@ -86,7 +94,9 @@ func _refresh_roster_ui() -> void:
 		
 		if card.get_index() != index:
 			card_container.move_child(card, index)
-			
+
+	_refresh_breed_button()
+
 
 func _on_parent_selection_requested(fish_id: String) -> void:
 	var fish := _find_fish(fish_id)
@@ -129,5 +139,76 @@ func _find_fish(fish_id: String) -> FishData:
 			return fish
 			
 	return null
+
+
+func _allocate_fish_id() -> String:
+	var allocated_id := "fish_%d" % next_fish_id
+	next_fish_id += 1
+	return allocated_id
+
+
+func _get_breeding_parents() -> Array[FishData]:
+	if selected_parent_ids.size() != MAX_SELECTED_PARENTS:
+		return []
+	if selected_parent_ids[0] == selected_parent_ids[1]:
+		return []
+		
+	var first := _find_fish(selected_parent_ids[0])
+	var second := _find_fish(selected_parent_ids[1])
 	
+	if first == null or second == null:
+		return []
+	if(
+		first.life_stage != FishData.LifeStage.ADULT
+		or second.life_stage != FishData.LifeStage.ADULT
+	):
+		return []
+	#Always return mother first and father second
+	if(
+		first.sex == FishData.Sex.FEMALE
+		and second.sex == FishData.Sex.MALE
+	):
+		return [first, second]
+	if(
+		first.sex == FishData.Sex.MALE
+		and second.sex== FishData.Sex.FEMALE
+	):
+		return[second, first]
+	return []
+
+
+func _refresh_breed_button() -> void:
+	var parents := _get_breeding_parents()
 	
+	breed_button.disabled = parents.is_empty()
+	
+	breed_button.tooltip_text = (
+		"Select one adult female and one adult male."
+		if parents.is_empty()
+		else "Create one fry without advancing the cycle."
+	)
+
+
+func _on_breed_button_pressed() -> void:
+	var parents := _get_breeding_parents()
+	
+	#Recheck the actual data before allocating an ID or breeding
+	if parents.is_empty():
+		_refresh_roster_ui()
+		return
+	var offspring := BreedingSystem.make_offspring(
+		parents[0],
+		parents[1],
+		_allocate_fish_id(),
+		registry,
+		Debug.rng
+	)
+	
+	roster.append(offspring)
+	
+	breed_result_label.text = "Last birth: %s | Glow: %s" % [
+		offspring.display_name,
+		offspring.cached_phenotype_dictionary["glow"],
+	]
+	
+	_refresh_roster_ui()

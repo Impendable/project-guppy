@@ -48,3 +48,14 @@ layout_mode = 2
 size_flags_horizontal = 6
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BreedButton" type="Button" parent="HBoxContainer" unique_id=1469823852]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Breed
+"
+
+[node name="BreedResultlabel" type="Label" parent="HBoxContainer" unique_id=1496636104]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No offspring yet."

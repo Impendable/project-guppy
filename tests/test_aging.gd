@@ -1,8 +1,5 @@
 extends Control
 
-@onready var lifecycle_config: LifecycleConfig = load("res://resources/lifecycle_config.tres")
-var cycles_run := 0
-
 const TEST_CYCLES := 30
 
 func _ready() -> void:

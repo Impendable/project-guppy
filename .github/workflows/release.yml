@@ -30,7 +30,8 @@ jobs:
         @semantic-release/commit-analyzer \
         @semantic-release/release-notes-generator \
         @semantic-release/github \
-        @semantic-release/exec
+        @semantic-release/exec \
+        @semantic-release/git
 
     - name: Run Semantic Release
       env:
