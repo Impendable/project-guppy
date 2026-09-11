@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MarketConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/market_config.gd" id="1_config"]
+
+[resource]
+script = ExtResource("1_config")
+base_value = 10
+forecast_horizon = 4
+gold = Array[float]([2.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+long_fins = Array[float]([1.5, 1.5, 1.5, 1.5, 4.0, 4.0, 4.0, 1.0, 1.0, 1.0])
+glow = Array[float]([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 6.0, 6.0, 6.0])
