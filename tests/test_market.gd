@@ -1,4 +1,4 @@
-extends SceneTree
+extends Control
 
 const EXPECTED_COMBO := [30, 30, 30, 30, 40, 40, 40, 10, 10, 10]
 const EXPECTED_GLOW := [10, 10, 10, 10, 10, 10, 10, 60, 60, 60]
@@ -6,8 +6,8 @@ const EXPECTED_GLOW := [10, 10, 10, 10, 10, 10, 10, 60, 60, 60]
 var _failures: int = 0
 
 
-func _init() -> void:
-	call_deferred("_run")
+func _ready() -> void:
+	_run()
 
 
 func _run() -> void:
@@ -157,4 +157,3 @@ func _finish() -> void:
 		print("PASS: market prices, forecasts, rounding, and maturity lead.")
 	else:
 		printerr("FAIL: %d market checks." % _failures)
-	quit(0 if _failures == 0 else 1)

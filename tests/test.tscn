@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://q41sa0xa82gu"]
 
-[ext_resource type="Script" uid="uid://jlot4k2bvwla" path="res://tests/test_aging.gd" id="1_fblgx"]
+[ext_resource type="Script" uid="uid://csfn3u30cmjat" path="res://tests/test_market.gd" id="1_yggfj"]
 
 [node name="Main" type="Control" unique_id=316868742]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_fblgx")
+script = ExtResource("1_yggfj")
