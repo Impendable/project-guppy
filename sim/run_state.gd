@@ -29,10 +29,14 @@ func _init(trait_registry: TraitRegistry, lifecycle: LifecycleConfig, market: Ma
 
 
 func start_new_run(run_seed: int) -> void:
-	_rng.seed - run_seed
+	_rng.seed = run_seed
 	money = 0
 	cycle = FIRST_CYCLE
 	
+	#Create population before notifying the screen
+	roster = RosterGenerator.generate(_registry, _rng)
+	
+	assert(not roster.is_empty(), "The starting roster was not generated.")
 	assert(roster.size() < ROSTER_CAPACITY, "Start with a free breeding slot.")
 	#The fresh generator uses consecutive IDs. This is not a save loader.
 	for index in range(roster.size()):
@@ -70,7 +74,7 @@ func find_fish(fish_id: String) -> FishData:
 	return null
 
 
-func breeding_blok_reason(first_id: String, second_id: String) -> String:
+func breeding_block_reason(first_id: String, second_id: String) -> String:
 	var first := find_fish(first_id)
 	var second := find_fish(second_id)
 	
@@ -87,7 +91,7 @@ func breeding_blok_reason(first_id: String, second_id: String) -> String:
 
 func breed_pair(first_id: String, second_id: String) -> FishData:
 	#Reject before consuming an Id or a random number
-	if not breeding_blok_reason(first_id, second_id).is_empty():
+	if not breeding_block_reason(first_id, second_id).is_empty():
 		return null
 	
 	var mom := find_fish(first_id)
@@ -108,4 +112,3 @@ func _allocate_fish_id() -> String:
 	var allocated_id := "fish_%d" % _next_fish_id
 	_next_fish_id += 1
 	return allocated_id
-	

@@ -9,45 +9,34 @@ const MAX_SELECTED_PARENTS := 2
 @onready var breed_result_label: Label = %BreedResultlabel
 @onready var card_container: VBoxContainer = %FishCardContainer
 
-var registry: TraitRegistry
-var lifecycle_config: LifecycleConfig
+var run: RunState
 
-var roster: Array[FishData] = []
 var selected_parent_ids: Array[String] = []
 var cards_by_id: Dictionary[String, FishCard] = {}
-var next_fish_id: int = 0
 
 
 func _ready() -> void:
-	registry = load("res://resources/trait_registry.tres")
-	lifecycle_config = load("res://resources/lifecycle_config.tres")
-	roster = RosterGenerator.generate(registry, Debug.rng)
-	next_fish_id = roster.size()
+	var registry := load("res://resources/trait_registry.tres") as TraitRegistry
+	var lifecycle := load("res://resources/lifecycle_config.tres") as LifecycleConfig
+	var market := load("res://resources/checkpoint_market.tres") as MarketConfig
+	run = RunState.new(registry, lifecycle, market)
 	
 	advance_button.pressed.connect(_on_advance_cycle_button_pressed)
-	TimeManager.cycle_advanced.connect(_on_cycle_advanced)
 	breed_button.pressed.connect(_on_breed_button_pressed)
-	
-	cycle_label.text = "Cycle: %d" % TimeManager.cycle
-	_refresh_roster_ui()
+	run.changed.connect(_refresh_roster_ui)
+	_start_new_run()
 
 
 func _on_advance_cycle_button_pressed() -> void:
-	TimeManager.advance_cycle()
-
-
-func _on_cycle_advanced(cycle: int) -> void:
-	var dead := AgingSystem.advance(roster, lifecycle_config)
-	for fish in dead:
-		roster.erase(fish)
-	cycle_label.text = "Cycle: %d" % cycle
-	_refresh_roster_ui()
+	run.advance_cycle()
 
 
 func _refresh_roster_ui() -> void:
+	cycle_label.text = "Cycle: %d/%d | Fish: %d/%d" % [run.cycle, run.last_cycle(), run.roster.size(), RunState.ROSTER_CAPACITY]
+	advance_button.disabled = not run.can_advance_cycle()
 	var live_ids: Array[String] = []
 	
-	for fish in roster:
+	for fish in run.roster:
 		assert(not fish.id.is_empty(), "A fish has no ID.")
 		assert(
 			not live_ids.has(fish.id),
@@ -73,8 +62,8 @@ func _refresh_roster_ui() -> void:
 			obsolete_card.queue_free()
 			
 	#Create missing cards and update all surviving cards
-	for index in range(roster.size()):
-		var fish := roster[index]
+	for index in range(run.roster.size()):
+		var fish := run.roster[index]
 		
 		if not cards_by_id.has(fish.id):
 			var new_card := FISH_CARD.instantiate() as FishCard
@@ -134,81 +123,38 @@ func _can_select_parent(fish: FishData) -> bool:
 
 
 func _find_fish(fish_id: String) -> FishData:
-	for fish in roster:
-		if fish.id == fish_id:
-			return fish
-			
-	return null
-
-
-func _allocate_fish_id() -> String:
-	var allocated_id := "fish_%d" % next_fish_id
-	next_fish_id += 1
-	return allocated_id
-
-
-func _get_breeding_parents() -> Array[FishData]:
-	if selected_parent_ids.size() != MAX_SELECTED_PARENTS:
-		return []
-	if selected_parent_ids[0] == selected_parent_ids[1]:
-		return []
-		
-	var first := _find_fish(selected_parent_ids[0])
-	var second := _find_fish(selected_parent_ids[1])
-	
-	if first == null or second == null:
-		return []
-	if(
-		first.life_stage != FishData.LifeStage.ADULT
-		or second.life_stage != FishData.LifeStage.ADULT
-	):
-		return []
-	#Always return mother first and father second
-	if(
-		first.sex == FishData.Sex.FEMALE
-		and second.sex == FishData.Sex.MALE
-	):
-		return [first, second]
-	if(
-		first.sex == FishData.Sex.MALE
-		and second.sex== FishData.Sex.FEMALE
-	):
-		return[second, first]
-	return []
+	return run.find_fish(fish_id)
 
 
 func _refresh_breed_button() -> void:
-	var parents := _get_breeding_parents()
-	
-	breed_button.disabled = parents.is_empty()
-	
-	breed_button.tooltip_text = (
-		"Select one adult female and one adult male."
-		if parents.is_empty()
-		else "Create one fry without advancing the cycle."
-	)
+	var reason := _breeding_block_reason()
+	breed_button.disabled = not reason.is_empty()
+	breed_button.tooltip_text = (reason if not reason.is_empty() else "Create one fry in a free roster slot.")
 
 
 func _on_breed_button_pressed() -> void:
-	var parents := _get_breeding_parents()
-	
-	#Recheck the actual data before allocating an ID or breeding
-	if parents.is_empty():
-		_refresh_roster_ui()
+	var reason := _breeding_block_reason()
+	if not reason.is_empty():
+		breed_result_label.text = reason
 		return
-	var offspring := BreedingSystem.make_offspring(
-		parents[0],
-		parents[1],
-		_allocate_fish_id(),
-		registry,
-		Debug.rng
-	)
 	
-	roster.append(offspring)
+	var offspring := run.breed_pair(selected_parent_ids[0], selected_parent_ids[1])
+	if offspring == null:
+		return
 	
 	breed_result_label.text = "Last birth: %s | Glow: %s" % [
-		offspring.display_name,
-		offspring.cached_phenotype_dictionary["glow"],
+		offspring.display_name, 
+		offspring.cached_phenotype_dictionary["glow"]
 	]
-	
-	_refresh_roster_ui()
+
+
+func _start_new_run() -> void:
+	selected_parent_ids.clear()
+	breed_result_label.text = "No offspring yet."
+	run.start_new_run(Debug.rng.seed)
+
+
+func _breeding_block_reason() -> String:
+	if selected_parent_ids.size() != MAX_SELECTED_PARENTS:
+		return "Select one adult female and one adult male."
+	return run.breeding_block_reason(selected_parent_ids[0], selected_parent_ids[1])

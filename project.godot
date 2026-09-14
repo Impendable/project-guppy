@@ -19,7 +19,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Debug="*uid://cyets0osknbbu"
-TimeManager="*uid://catmhlc7mubsg"
 
 [display]
 
